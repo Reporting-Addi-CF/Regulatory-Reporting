@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Área de Reportes Regulatorios</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root {
+  --bg: #eef4fb;
+  --surface: #ffffff;
+  --surface2: #dde8f5;
+  --border: rgba(30,80,160,0.10);
+  --border2: rgba(30,80,160,0.18);
+  --text: #0f2040;
+  --muted: #4a6080;
+  --hint: #8aa0bc;
+  --accent: #1a56c4;
+  --accent2: #0ea47a;
+  --accent3: #d97706;
+  --accent-soft: rgba(26,86,196,0.10);
+  --accent2-soft: rgba(14,164,122,0.10);
+  --accent3-soft: rgba(217,119,6,0.10);
+  --red-soft: rgba(220,38,38,0.08);
+  --red: #dc2626;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --radius: 10px;
+  --radius-lg: 16px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* HEADER */
+.header {
+  padding: 1.5rem 5rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--bg);
+}
+.header-left h1 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+.header-left p {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent2-soft);
+  color: var(--accent2);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(14,164,122,0.25);
+  margin-top: 6px;
+}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* NAV */
+.nav-wrap {
+  padding: 0 5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  position: sticky;
+  top: 0;
+  background: #1a56c4;
+  z-index: 99;
+}
+.nav-wrap::-webkit-scrollbar { display: none; }
+.nav-btn {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.65);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  transition: all .2s;
+}
+.nav-btn svg { opacity: .65; flex-shrink: 0; }
+.nav-btn:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.1); }
+.nav-btn.active { color: #ffffff; border-bottom-color: #ffffff; font-weight: 500; background: rgba(255,255,255,0.22); }
+.nav-btn.active svg { opacity: 1; }
+
+/* CONTENT */
+.content { padding: 2rem 5rem; }
+
+.section { display: none; animation: fadeIn .2s ease; }
+.section.active { display: block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.card-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--hint);
+  margin-bottom: 1.25rem;
+}
+
+/* BADGES */
+.badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.b-green { background: rgba(14,164,122,.1); color: #0a7a5a; border: 1px solid rgba(14,164,122,.2); }
+.b-amber { background: rgba(217,119,6,.1); color: #b45309; border: 1px solid rgba(217,119,6,.2); }
+.b-purple { background: rgba(26,86,196,.1); color: #1a56c4; border: 1px solid rgba(26,86,196,.2); }
+.b-red { background: rgba(220,38,38,.08); color: #dc2626; border: 1px solid rgba(220,38,38,.18); }
+.b-gray { background: rgba(30,80,160,.06); color: var(--muted); border: 1px solid var(--border); }
+.b-teal { background: rgba(6,120,180,.1); color: #0678b4; border: 1px solid rgba(6,120,180,.2); }
+
+/* FLOW */
+.flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 1.25rem;
+  overflow-x: visible;
+  padding-bottom: 0;
+}
+.flow-step {
+  flex: 1;
+  min-width: 110px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+}
+.flow-step:hover, .flow-step.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.flow-step.active::after {
+  content: '';
+  position: absolute;
+  bottom: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--accent);
+}
+.step-num { font-size: 10px; color: var(--hint); margin-bottom: 3px; font-family: var(--font-display); letter-spacing: .05em; }
+.step-name { font-size: 13px; font-weight: 500; color: var(--text); }
+.step-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.flow-arrow { display: flex; align-items: center; padding: 0 5px; color: var(--hint); font-size: 14px; flex-shrink: 0; }
+
+.step-detail {
+  background: var(--surface2);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  margin-top: .5rem;
+  display: none;
+}
+.step-detail.visible { display: block; animation: fadeIn .2s ease; }
+.step-detail h3 { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 10px; }
+.detail-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.detail-list li { font-size: 13px; color: var(--muted); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+.detail-list li svg { flex-shrink: 0; margin-top: 2px; color: var(--accent); }
+
+/* TEAM GRID */
+.team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+.team-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.team-role { font-size: 11px; color: var(--hint); margin-bottom: 4px; font-family: var(--font-display); letter-spacing: .04em; }
+.team-desc { font-size: 13px; color: var(--text); font-weight: 400; }
+
+/* REPORT GRID */
+.report-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(195px,1fr)); gap: 10px; }
+.report-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 13px 14px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.report-card:hover { border-color: var(--accent); background: var(--accent-soft); }
+.rc-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+.rc-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+
+.report-detail {
+  background: var(--surface2);
+  border: 1px solid rgba(26,86,196,.25);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  display: none;
+}
+.report-detail.visible { display: block; animation: fadeIn .2s; }
+.rdp-title { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--accent); margin-bottom: 12px; }
+.rdp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rdp-item { }
+.rdp-key { font-size: 11px; color: var(--hint); margin-bottom: 2px; }
+.rdp-val { font-size: 13px; color: var(--text); }
+
+/* DOC TREE */
+.doc-folder { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 10px; }
+.doc-folder-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 16px; cursor: pointer; transition: background .15s;
+}
+.doc-folder-header:hover { background: var(--surface2); }
+.folder-icon { color: var(--accent); flex-shrink: 0; }
+.folder-name { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; }
+.folder-count { font-size: 12px; color: var(--muted); }
+.folder-chevron { color: var(--hint); transition: transform .2s; }
+.doc-folder-body { display: none; border-top: 1px solid var(--border); }
+.doc-folder-body.open { display: block; }
+.doc-item { display: flex; align-items: center; gap: 10px; padding: 9px 16px 9px 42px; border-bottom: 1px solid var(--border); }
+.doc-item:last-child { border-bottom: none; }
+.doc-item svg { color: var(--hint); flex-shrink: 0; }
+.doc-name { font-size: 13px; color: var(--muted); flex: 1; }
+
+/* CONTROLS */
+.control-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  transition: border-color .15s;
+}
+.control-item:hover { border-color: var(--border2); }
+.ctrl-icon {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ctrl-name { font-size: 13px; font-weight: 500; color: var(--text); }
+.ctrl-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.ctrl-group-title {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--hint);
+  margin: 1.25rem 0 .75rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.ctrl-group-title:first-child { margin-top: 0; }
+
+/* PROJECTS */
+.proj-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: .75rem;
+  cursor: pointer;
+  transition: border-color .2s;
+}
+.proj-card:hover { border-color: var(--border2); }
+.proj-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+.proj-icon {
+  width: 38px; height: 38px;
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.proj-title { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--text); flex: 1; margin-top: 2px; }
+.proj-body { font-size: 13px; color: var(--muted); margin-bottom: 10px; line-height: 1.6; }
+.proj-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.proj-detail-panel {
+  background: var(--surface2);
+  border-left: 2px solid var(--accent2);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 16px;
+  margin: 0 0 .75rem;
+  display: none;
+}
+.proj-detail-panel.visible { display: block; animation: fadeIn .2s; }
+.proj-detail-title { font-size: 13px; font-weight: 500; color: var(--accent); margin-bottom: 10px; }
+.milestone { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); padding: 4px 0; }
+.milestone svg { flex-shrink: 0; }
+
+/* PROGRESS */
+.progress-wrap { margin: 8px 0 0; }
+.progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+.progress-bar { background: rgba(255,255,255,.05); border-radius: 4px; height: 5px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 4px; background: var(--accent); }
+.progress-fill.green { background: var(--accent2); }
+
+/* DIVIDER */
+.divider { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .header { padding: 1.25rem 1.25rem 1rem; }
+  .nav-wrap { padding: 0 1.25rem; }
+  .content { padding: 1.25rem; }
+  .rdp-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <h1>Addi SA Compañia de financiamiento</h1>
+    <p style="font-size:15px;color:var(--muted);margin-top:2px;font-weight:500;">Regulatory Reporting</p>
+    <p style="font-size:13px;color:var(--muted);margin-top:2px;">Finances Team</p>
+    <p style="font-size:13px;color:var(--muted);margin-top:2px;">Mayo 2026</p>
+  </div>
+  <div style="display:flex;align-items:flex-start;">
+    <a href="https://www.notion.so/addico/Regulatory-Reporting-Documentation-342eace5de2b8044ae61c52cda8e021e" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:#185FA5;text-decoration:none;border:1px solid rgba(24,95,165,.25);background:#E6F1FB;padding:7px 14px;border-radius:20px;white-space:nowrap;margin-top:4px;"><i class="ti ti-folder" style="font-size:13px" aria-hidden="true"></i>Documentación del área ↗</a>
+  </div>
+</header>
+
+<nav class="nav-wrap" id="nav">
+  <button class="nav-btn active" onclick="switchTab('proceso',this)">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 3v2m0 14v2M3 12h2m14 0h2m-3.2-7.8-1.4 1.4M7.6 17.4l-1.4 1.4m0-12.8 1.4 1.4m9.8 9.8 1.4 1.4"/></svg>
+    Proceso
+  </button>
+  <button class="nav-btn" onclick="switchTab('ourteam',this)">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    Equipo
+  </button>
+  <button class="nav-btn" onclick="switchTab('inventario',this)">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 12 2 2 4-4"/></svg>
+    Inventario de reportes
+  </button>
+  <button class="nav-btn" onclick="switchTab('terceros',this)">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    Terceros
+  </button>
+  <button class="nav-btn" onclick="switchTab('controles',this)">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Controles
+  </button>
+  <button class="nav-btn" onclick="switchTab('proyectos',this)">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+    Proyectos
+  </button>
+</nav>
+
+<main class="content">
+
+<!-- PROCESO -->
+<div id="proceso" class="section active">
+<style>
+.sb{display:flex;flex-direction:column;gap:0}
+.sb-item{display:flex;gap:0;position:relative}
+.sb-left{display:flex;flex-direction:column;align-items:center;width:56px;flex-shrink:0}
+.sb-num{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;flex-shrink:0;border:2px solid;transition:all .22s;cursor:pointer;position:relative;z-index:1}
+.sb-num.ins{background:#E6F1FB;border-color:#185FA5;color:#0C447C}
+.sb-num.con{background:#E1F5EE;border-color:#0F6E56;color:#085041}
+.sb-num.val{background:#FAEEDA;border-color:#854F0B;color:#633806}
+.sb-num.env{background:#E6F1FB;border-color:#185FA5;color:#0C447C}
+.sb-num.cie{background:#EAF3DE;border-color:#3B6D11;color:#27500A}
+.sb-num.open.ins{box-shadow:0 0 0 5px rgba(24,95,165,.14)}
+.sb-num.open.con{box-shadow:0 0 0 5px rgba(15,110,86,.14)}
+.sb-num.open.val{box-shadow:0 0 0 5px rgba(133,79,11,.14)}
+.sb-num.open.env{box-shadow:0 0 0 5px rgba(24,95,165,.14)}
+.sb-num.open.cie{box-shadow:0 0 0 5px rgba(59,109,17,.14)}
+.sb-line{flex:1;width:2px;background:var(--border);margin:3px 0}
+.sb-item:last-child .sb-line{display:none}
+.sb-card{flex:1;margin-bottom:10px;margin-left:10px;border-radius:12px;border:1px solid var(--border);background:var(--surface);overflow:hidden;transition:border-color .2s;cursor:pointer}
+.sb-card:hover{border-color:var(--border2)}
+.sb-card.open.ins{border-color:rgba(24,95,165,.4)}.sb-card.open.con{border-color:rgba(15,110,86,.4)}
+.sb-card.open.val{border-color:rgba(133,79,11,.4)}.sb-card.open.env{border-color:rgba(24,95,165,.4)}.sb-card.open.cie{border-color:rgba(59,109,17,.4)}
+.sb-hdr{display:flex;align-items:center;gap:12px;padding:13px 16px}
+.sb-ico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all .2s}
+.sb-ico.ins{background:#E6F1FB;color:#185FA5}.sb-ico.con{background:#E1F5EE;color:#0F6E56}
+.sb-ico.val{background:#FAEEDA;color:#854F0B}.sb-ico.env{background:#E6F1FB;color:#185FA5}.sb-ico.cie{background:#EAF3DE;color:#3B6D11}
+.sb-txt{flex:1}
+.sb-phase{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.sb-phase.ins{color:#185FA5}.sb-phase.con{color:#0F6E56}.sb-phase.val{color:#854F0B}.sb-phase.env{color:#185FA5}.sb-phase.cie{color:#3B6D11}
+.sb-title{font-size:14px;font-weight:500;color:var(--text);line-height:1.3}
+.sb-time{font-size:11px;font-weight:600;color:#185FA5;white-space:nowrap;flex-shrink:0}
+.sb-chev{font-size:14px;color:var(--muted);transition:transform .2s;flex-shrink:0}
+.sb-card.open .sb-chev{transform:rotate(180deg)}
+.sb-body{display:none;padding:0 16px 14px 16px;border-top:1px solid var(--border)}
+.sb-card.open .sb-body{display:block}
+.sb-desc{font-size:13px;color:var(--muted);line-height:1.68;padding:12px 0 8px}
+.sb-tags{display:flex;flex-direction:column;gap:5px}
+.sb-tag{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;border-radius:8px;font-size:12px;line-height:1.5}
+.sb-tag i{font-size:13px;flex-shrink:0;margin-top:1px}
+.sb-tag span{flex:1}
+.stok{background:rgba(14,164,122,.06);border:0.5px solid rgba(14,164,122,.2);color:#085041}
+.sterr{background:rgba(163,45,45,.06);border:0.5px solid rgba(163,45,45,.2);color:#791F1F}
+.sthr{background:rgba(24,95,165,.06);border:0.5px solid rgba(24,95,165,.2);color:#0C447C}
+.stnote{background:var(--surface2);border:0.5px solid var(--border);color:var(--muted)}
+.prc-sep{display:flex;align-items:center;gap:14px;margin:2rem 0 1.5rem}
+.prc-sep-line{flex:1;height:1px;background:var(--border)}
+.prc-sep-label{font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.ans-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.ans-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px}
+.ans-card-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ans-area-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ans-area-name{font-size:13px;font-weight:500;color:var(--text)}
+.ans-area-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.ans-rows{display:flex;flex-direction:column;gap:0}
+.ans-row{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--border);font-size:12px}
+.ans-row:last-child{border-bottom:none}
+.ans-row-label{color:var(--muted);flex:1}
+.ans-row-val{font-weight:500;color:var(--text);white-space:nowrap}
+.ans-row-val.tbd{color:var(--hint);font-weight:400;font-style:italic}
+.ans-row-val.time{color:#185FA5;font-weight:600}
+</style>
+
+  <div class="card">
+    <div class="card-label">Ciclo de vida de un reporte regulatorio</div>
+    <div class="sb" id="sb-list"></div>
+  </div>
+
+  <div class="prc-sep">
+    <div class="prc-sep-line"></div>
+    <div style="display:flex;align-items:center;gap:12px;white-space:nowrap;">
+      <span class="prc-sep-label">Áreas proveedoras de insumos y ANS</span>
+      <a href="https://docs.google.com/spreadsheets/d/1mFBN36msy7qDiYEnKyBG1LTFg5O5A2bQXpC8rI8bwEQ/edit#gid=2028818982" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:var(--accent);text-decoration:none;border:1px solid rgba(26,86,196,.2);background:rgba(26,86,196,.06);padding:3px 10px;border-radius:20px;"><i class="ti ti-table" style="font-size:12px" aria-hidden="true"></i>Ver ANS completo en Sheets ↗</a>
+    </div>
+    <div class="prc-sep-line"></div>
+  </div>
+
+  <div class="ans-grid">
+    <div class="ans-card" onclick="document.getElementById('ans-modal').style.display='flex'" style="cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor='rgba(133,79,11,.4)'" onmouseout="this.style.borderColor=''">
+      <div class="ans-card-header">
+        <div class="ans-area-icon" style="background:#FAEEDA;color:#854F0B"><i class="ti ti-users" style="font-size:16px" aria-hidden="true"></i></div>
+        <div><div class="ans-area-name">Áreas funcionales</div><div class="ans-area-sub">Contabilidad · Riesgos · Operaciones · Legal</div></div>
+        <span style="font-size:10px;background:#FAEEDA;color:#854F0B;border:1px solid rgba(133,79,11,.25);padding:2px 8px;border-radius:20px;font-weight:600;white-space:nowrap;margin-left:auto;">Ver ANS ↗</span>
+      </div>
+      <div class="ans-rows">
+        <div class="ans-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+          <span class="ans-row-label">Canal de aprobaciones</span>
+          <a href="https://addi.enterprise.slack.com/archives/C09FY5RRM50" target="_blank" style="font-size:12px;font-weight:500;color:#185FA5;text-decoration:none;display:flex;align-items:center;gap:4px;word-break:break-all;"><i class="ti ti-brand-slack" style="font-size:13px;flex-shrink:0" aria-hidden="true"></i>#regulatory-reporting-approvals</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="ans-card" onclick="document.getElementById('ans-insumos-modal').style.display='flex'" style="cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor='rgba(24,95,165,.4)'" onmouseout="this.style.borderColor=''">
+      <div class="ans-card-header">
+        <div class="ans-area-icon" style="background:#E6F1FB;color:#185FA5"><i class="ti ti-database" style="font-size:16px" aria-hidden="true"></i></div>
+        <div><div class="ans-area-name">ANS Insumos regulatorios</div><div class="ans-area-sub">Áreas funcionales</div></div>
+        <span style="font-size:10px;background:#E6F1FB;color:#185FA5;border:1px solid rgba(24,95,165,.25);padding:2px 8px;border-radius:20px;font-weight:600;white-space:nowrap;margin-left:auto;">Ver ANS ↗</span>
+      </div>
+      <div class="ans-rows">
+        <div class="ans-row"><span class="ans-row-label">Generación tablas regulatorias</span><span class="ans-row-val time">7:00 am · 10:30 am</span></div>
+        <div class="ans-row"><span class="ans-row-label">Disponibilidad en AWS</span><span class="ans-row-val time">7:20 am</span></div>
+        <div class="ans-row"><span class="ans-row-label">Cargue en SIREG</span><span class="ans-row-val time">7:20 am</span></div>
+      </div>
+    </div>
+
+  <!-- MODAL ANS INSUMOS -->
+  <div id="ans-insumos-modal" style="display:none;position:fixed;inset:0;background:rgba(15,32,64,.5);z-index:9999;align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+    <div style="background:var(--surface);border-radius:var(--radius-lg);width:94%;max-width:860px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0;">
+        <div>
+          <div style="font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--text);">ANS Insumos Regulatorios — Addi CF</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:1px;">Actualización: 08 Abril 2026</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <a href="https://docs.google.com/spreadsheets/d/1mFBN36msy7qDiYEnKyBG1LTFg5O5A2bQXpC8rI8bwEQ/edit?gid=1535818519#gid=1535818519" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:var(--accent);text-decoration:none;border:1px solid rgba(26,86,196,.2);background:rgba(26,86,196,.06);padding:4px 12px;border-radius:20px;"><i class="ti ti-external-link" style="font-size:11px" aria-hidden="true"></i>Abrir en Sheets</a>
+          <button onclick="document.getElementById('ans-insumos-modal').style.display='none'" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:22px;line-height:1;padding:0 4px;">&times;</button>
+        </div>
+      </div>
+      <div style="overflow:auto;flex:1;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;min-width:600px;">
+          <thead>
+            <tr style="background:var(--text);">
+              <th style="padding:9px 14px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;">Insumo</th>
+              <th style="padding:9px 14px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;">Periodicidad</th>
+              <th style="padding:9px 14px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;">ANS</th>
+              <th style="padding:9px 14px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;">Formatos</th>
+              <th style="padding:9px 14px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;">Responsable</th>
+              <th style="padding:9px 14px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;">Backup</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tbody>
+            <tr style="background:var(--surface2);">
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);font-weight:500;">Tabla Nómina IRL</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">Semanal</td>
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);">Cada viernes antes de las 6:00 pm</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">458 M &amp; S</td>
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);">Hector David Ovalle Mojica</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">Jorge Andres Salamanca</td>
+            </tr>
+            <tr>
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);font-weight:500;">Tabla Impuestos IRL</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">Semanal</td>
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);">Cada viernes antes de las 6:00 pm</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">458 M &amp; S</td>
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);">Deisy Samantha Barrera Rojas</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">Luisa Fernanda Ocampo</td>
+            </tr>
+            <tr style="background:var(--surface2);">
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);font-weight:500;">Accionistas</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">Mensual</td>
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);">Primeros 5 días calendario de cada mes</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">529 &amp; GExp</td>
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);">Sofia Velez Alvarez</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">Maria Jose Aya Clavijo</td>
+            </tr>
+            <tr>
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);font-weight:500;">Formato 417</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">Trimestral</td>
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);">Primeros 10 días calendario de cada mes</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">F417</td>
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);">Juan Camilo Mendez Lañas</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">Juan Pablo Montaño</td>
+            </tr>
+            <tr style="background:var(--surface2);">
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);font-weight:500;">Formato 408</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">Trimestral</td>
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);">Primeros 5 días calendario de cada mes</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">F408</td>
+              <td style="padding:10px 14px;color:var(--text);border-bottom:0.5px solid var(--border);">Cristian Felipe Gonzalez</td>
+              <td style="padding:10px 14px;color:var(--muted);border-bottom:0.5px solid var(--border);">Carolina Zuñiga Ospina</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ANS -->
+  <div id="ans-modal" style="display:none;position:fixed;inset:0;background:rgba(15,32,64,.5);z-index:9999;align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+    <div style="background:var(--surface);border-radius:var(--radius-lg);width:94%;max-width:920px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0;">
+        <div>
+          <div style="font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--text);">ANS Reporting — Addi CF</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:1px;">Actualización: 10 Octubre 2025</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <a href="https://docs.google.com/spreadsheets/d/1mFBN36msy7qDiYEnKyBG1LTFg5O5A2bQXpC8rI8bwEQ/edit#gid=2028818982" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:var(--accent);text-decoration:none;border:1px solid rgba(26,86,196,.2);background:rgba(26,86,196,.06);padding:4px 12px;border-radius:20px;"><i class="ti ti-external-link" style="font-size:11px" aria-hidden="true"></i>Abrir en Sheets</a>
+          <button onclick="document.getElementById('ans-modal').style.display='none'" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:22px;line-height:1;padding:0 4px;">&times;</button>
+        </div>
+      </div>
+      <div style="overflow:auto;flex:1;">
+        <table style="width:100%;border-collapse:collapse;font-size:11.5px;min-width:760px;">
+          <thead>
+            <tr style="background:var(--text);">
+              <th style="padding:9px 12px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;white-space:nowrap;">Regulador</th>
+              <th style="padding:9px 12px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;white-space:nowrap;">Periodicidad</th>
+              <th style="padding:9px 12px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;white-space:nowrap;">Vencimiento</th>
+              <th style="padding:9px 12px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;white-space:nowrap;">Formato</th>
+              <th style="padding:9px 12px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;">Envío al área funcional</th>
+              <th style="padding:9px 12px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;">Recepción área funcional</th>
+              <th style="padding:9px 12px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;">Transmisión</th>
+            </tr>
+          </thead>
+          <tbody id="ans-tbody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+<script>
+(function(){
+const ANS=[
+ {reg:'SFC',per:'Diario',vec:'T+1',fmt:'F441',env:'01 día hábil · 7:10',rec:'01 día hábil · 7:30',tra:'01 día hábil · 7:40'},
+ {reg:'SFC',per:'Diario',vec:'T+1',fmt:'F386',env:'01 día hábil · 8:10',rec:'01 día hábil · 8:20',tra:'01 día hábil · 8:30'},
+ {reg:'SFC',per:'Diario',vec:'T+2',fmt:'F351',env:'01 día hábil · 10:00',rec:'01 día hábil · 12:00',tra:'01 día hábil · 15:00'},
+ {reg:'SFC',per:'Semanal',vec:'T+1',fmt:'F458S',env:'01 día hábil · 12:00',rec:'01 día hábil · 15:00',tra:'01 día hábil · 15:30'},
+ {reg:'SFC',per:'Semanal',vec:'T+3',fmt:'F281',env:'01 día hábil · 12:00',rec:'02 días hábil · 12:00',tra:'02 días hábil · 14:00'},
+ {reg:'SFC',per:'Bisemanal',vec:'T+7',fmt:'F443',env:'02 días hábil · 12:00',rec:'03 días hábil · 16:00',tra:'07 días hábil · 12:00'},
+ {reg:'SFC',per:'Mensual',vec:'T+10',fmt:'—',env:'03 días calendario · 16:00',rec:'6 días calendario · 16:00',tra:'8 días calendario · 12:00'},
+ {reg:'SFC',per:'Mensual',vec:'T+20',fmt:'—',env:'05 días calendario · 16:00',rec:'10 días calendario · 16:00',tra:'15 días calendario · 12:00'},
+ {reg:'SFC',per:'Trimestral',vec:'T+20',fmt:'—',env:'05 días calendario · 16:00',rec:'10 días calendario · 16:00',tra:'15 días calendario · 12:00'},
+ {reg:'SFC',per:'Semestral',vec:'T+20',fmt:'—',env:'05 días calendario · 16:00',rec:'10 días calendario · 16:00',tra:'15 días calendario · 12:00'},
+ {reg:'SFC',per:'Anual',vec:'T+90',fmt:'—',env:'35 días calendario · 16:00',rec:'50 días calendario · 16:00',tra:'60 días calendario · 12:00'},
+ {reg:'BR',per:'Diario',vec:'T+2',fmt:'EPE',env:'01 día hábil · 12:00',rec:'01 día hábil · 14:00',tra:'01 día hábil · 8:00'},
+ {reg:'UIAF',per:'Mensual',vec:'T+20',fmt:'—',env:'05 días calendario · 16:00',rec:'10 días calendario · 16:00',tra:'15 días calendario · 12:00'},
+ {reg:'FOGAFIN',per:'Trimestral',vec:'T+4',fmt:'—',env:'02 días calendario · 16:00',rec:'4 días calendario · 16:00',tra:'4 días calendario · 12:00'},
+ {reg:'DIAN',per:'Mensual',vec:'T+20',fmt:'—',env:'05 días calendario · 16:00',rec:'10 días calendario · 16:00',tra:'15 días calendario · 12:00'},
+ {reg:'TransUnion',per:'Mensual',vec:'T+10',fmt:'—',env:'03 días calendario · 16:00',rec:'6 días calendario · 16:00',tra:'8 días calendario · 12:00'},
+ {reg:'Datacredito',per:'Mensual',vec:'T+10',fmt:'—',env:'03 días calendario · 16:00',rec:'6 días calendario · 16:00',tra:'8 días calendario · 12:00'},
+];
+const COLORS={SFC:'rgba(26,86,196,.07)',BR:'rgba(14,164,122,.07)',UIAF:'rgba(59,130,246,.07)',FOGAFIN:'rgba(163,45,45,.07)',DIAN:'rgba(30,80,160,.07)',TransUnion:'rgba(83,74,183,.07)',Datacredito:'rgba(15,110,86,.07)'};
+const tbody=document.getElementById('ans-tbody');
+if(!tbody)return;
+let lastReg='';
+tbody.innerHTML=ANS.map(r=>{
+ const bg=COLORS[r.reg]||'';
+ const regCell=r.reg!==lastReg?`<td rowspan="${ANS.filter(x=>x.reg===r.reg).length}" style="padding:8px 12px;font-weight:600;color:var(--text);font-size:12px;vertical-align:top;border-bottom:1px solid var(--border);background:${bg}">${r.reg}</td>`:'';
+ if(r.reg!==lastReg)lastReg=r.reg;
+ else return `<tr style="background:${bg}"><td style="padding:8px 12px;color:var(--muted);border-bottom:0.5px solid var(--border);">${r.per}</td><td style="padding:8px 12px;text-align:center;font-weight:500;color:var(--accent);border-bottom:0.5px solid var(--border);">${r.vec}</td><td style="padding:8px 12px;color:var(--muted);border-bottom:0.5px solid var(--border);">${r.fmt}</td><td style="padding:8px 12px;color:var(--text);border-bottom:0.5px solid var(--border);">${r.env}</td><td style="padding:8px 12px;color:var(--text);border-bottom:0.5px solid var(--border);">${r.rec}</td><td style="padding:8px 12px;color:var(--text);border-bottom:0.5px solid var(--border);">${r.tra}</td></tr>`;
+ return `<tr style="background:${bg}">${regCell}<td style="padding:8px 12px;color:var(--muted);border-bottom:0.5px solid var(--border);">${r.per}</td><td style="padding:8px 12px;text-align:center;font-weight:500;color:var(--accent);border-bottom:0.5px solid var(--border);">${r.vec}</td><td style="padding:8px 12px;color:var(--muted);border-bottom:0.5px solid var(--border);">${r.fmt}</td><td style="padding:8px 12px;color:var(--text);border-bottom:0.5px solid var(--border);">${r.env}</td><td style="padding:8px 12px;color:var(--text);border-bottom:0.5px solid var(--border);">${r.rec}</td><td style="padding:8px 12px;color:var(--text);border-bottom:0.5px solid var(--border);">${r.tra}</td></tr>`;
+}).join('');
+})();
+</script>
+</div>
+
+<script>
+(function(){
+const STEPS=[
+ {num:'01',ph:'ins',phLabel:'Insumos',icon:'ti-database',title:'Generación de insumos',time:'7:00 am',
+  desc:'Se generan de forma automática las tablas regulatorias de insumos (7:00 am) y se cargan en AWS (7:20 am), dejándolos disponibles para que TSI los consuma a través de SIREG.',
+  tags:[{t:'hr',txt:'<strong>7:00 am · 10:30 am</strong> — generación automática de tablas regulatorias · <strong>7:20 am</strong> — disponible en AWS'},{t:'ok',txt:'<strong>Condición de salida:</strong> Data disponible y validada en AWS · Se crea alerta de generación exitosa en canal de Slack'},{t:'err',txt:'<strong>Si falla:</strong> El alertamiento notifica al Data team para que revisen y reprocesen la información. Vuelve a este paso.'}]},
+ {num:'02',ph:'con',phLabel:'Construcción',icon:'ti-upload',title:'Cargue y validación en SIREG',time:'7:20 am',
+  desc:'SIREG consume la data desde AWS y la carga al aplicativo SIREG de forma automática o manual (7:20 am). El área valida que el cargue sea correcto e íntegro antes de generar reportes.',
+  tags:[{t:'hr',txt:'<strong>7:20 am</strong> — cargue en SIREG (automático / manual)'},{t:'ok',txt:'<strong>Condición de salida:</strong> Cargue exitoso validado en SIREG'},{t:'err',txt:'<strong>Si falla:</strong> Crear caso en canal de support reporting, notificando a Data y a TSI. Revisar datos de origen. Vuelve al paso 01.'}]},
+ {num:'03',ph:'con',phLabel:'Construcción',icon:'ti-file-text',title:'Generación de reportes en SIREG',time:null,
+  desc:'El equipo de Regulatory Reporting genera los reportes en formato Excel y TXT, verificando que correspondan con los requeridos por cada regulador dentro de las fechas de corte y transmisión.',
+  tags:[{t:'ok',txt:'<strong>Condición de salida:</strong> Archivos Excel y TXT generados, verificados y dentro de fechas de corte y transmisión'},{t:'err',txt:'<strong>Si hay error:</strong> Revisar configuración del formato y escalar a SIREG. Vuelve al paso 02.'}]},
+ {num:'04',ph:'val',phLabel:'Validación',icon:'ti-clipboard-check',title:'Validaciones normativas — Regulatory Reporting',time:null,
+  desc:'El área de Regulatory Reporting realiza las validaciones normativas de acuerdo a la necesidad de cada formato. Una vez correcto, se envía por el flujo de aprobaciones en Slack indicando al funcional el formato y deadline de certificación según los ANS.',
+  tags:[{t:'ok',txt:'<strong>Condición de salida:</strong> Formato validado normativamente y enviado al funcional por Slack con deadline de certificación'},{t:'err',txt:'<strong>Si falla:</strong> Revisar errores con el usuario funcional y el equipo de Data. Vuelve al paso 02.'},{t:'note',txt:'Ver pestaña Controles para el detalle de validaciones por formato.'}]},
+ {num:'05',ph:'val',phLabel:'Validación',icon:'ti-user-check',title:'Validación y certificación funcional',time:null,
+  desc:'El funcional recibe el formato y ejecuta sus validaciones funcionales, certificando que el contenido es correcto desde la perspectiva del negocio.',
+  tags:[{t:'ok',txt:'<strong>Si ambas validaciones son exitosas:</strong> Continúa a aprobación y firma'},{t:'err',txt:'<strong>Si falla:</strong> Revisar los errores con el usuario funcional y el equipo de Data. Vuelve al paso 02.'},{t:'note',txt:'Puede requerir múltiples iteraciones antes de continuar.'}]},
+ {num:'06',ph:'val',phLabel:'Validación',icon:'ti-signature',title:'Aprobación y firma de archivos planos',time:null,
+  desc:'Se recibe la aprobación de los reportes por el flujo de aprobaciones en Slack y se solicita la firma del Representante Legal. El RL firma digitalmente los archivos planos que se requieran y se adjuntan en el hilo del reporte.',
+  tags:[{t:'ok',txt:'<strong>Condición de salida:</strong> Archivos aprobados y firmados digitalmente'},{t:'note',txt:'<strong>Si no requiere firma RL:</strong> Pasa directamente a transmisión'},{t:'err',txt:'<strong>Si falla la firma:</strong> Contactar proveedor y gestionar nuevo intento.'}]},
+ {num:'07',ph:'env',phLabel:'Envío',icon:'ti-antenna',title:'Transmisión al regulador',time:null,
+  desc:'Se transmite el formato al regulador por el canal oficial correspondiente (portal SFC, UIAF, Banco República, etc.) y se verifica la recepción exitosa.',
+  tags:[{t:'ok',txt:'<strong>Si la transmisión es exitosa:</strong> Continúa a guardado de evidencias'},{t:'err',txt:'<strong>Si falla:</strong> Verificar canal y reintentar. Si persiste, escalar y documentar el incidente.'}]},
+ {num:'08',ph:'cie',phLabel:'Cierre',icon:'ti-archive',title:'Guardado, confirmación y cierre',time:null,
+  desc:'Se guarda la evidencia en el repositorio seguro en Google Drive organizado por regulador, formato y fecha de corte. Se notifica a las áreas funcionales la transmisión exitosa y se actualiza el registro dentro del tablero de métricas del área. Ciclo completo.',
+  tags:[{t:'ok',txt:'<strong>Condición de salida:</strong> Evidencia en Drive (regulador/formato/fecha) · Funcionales notificados · Tablero de métricas actualizado'},{t:'err',txt:'<strong>Gestión de errores:</strong> Todo error debe documentarse con fecha, tipo, responsable y acción tomada.'}]},
+];
+let openSet=new Set();
+function tagClass(t){return t==='ok'?'stok':t==='err'?'sterr':t==='hr'?'sthr':'stnote';}
+function tagIcon(t){return t==='ok'?'ti-circle-check':t==='err'?'ti-alert-triangle':t==='hr'?'ti-clock':'ti-info-circle';}
+function render(){
+ const c=document.getElementById('sb-list');
+ c.innerHTML=STEPS.map((s,i)=>`
+  <div class="sb-item">
+   <div class="sb-left">
+    <div class="sb-num ${s.ph}${openSet.has(i)?' open':''}" onclick="sbToggle(${i})">${s.num}</div>
+    <div class="sb-line"></div>
+   </div>
+   <div class="sb-card${openSet.has(i)?' open':''} ${s.ph}" onclick="sbToggle(${i})">
+    <div class="sb-hdr">
+     <div class="sb-ico ${s.ph}"><i class="ti ${s.icon}" aria-hidden="true"></i></div>
+     <div class="sb-txt">
+      <div class="sb-phase ${s.ph}">${s.phLabel}</div>
+      <div class="sb-title">${s.title}</div>
+     </div>
+     
+     <i class="ti ti-chevron-down sb-chev" aria-hidden="true"></i>
+    </div>
+    <div class="sb-body">
+     <div class="sb-desc">${s.desc}</div>
+     <div class="sb-tags">${(s.tags||[]).map(t=>`<div class="sb-tag ${tagClass(t.t)}"><i class="ti ${tagIcon(t.t)}" aria-hidden="true"></i><span>${t.txt}</span></div>`).join('')}</div>
+    </div>
+   </div>
+  </div>`).join('');
+}
+window.sbToggle=function(i){openSet.has(i)?openSet.delete(i):openSet.add(i);render();};
+render();
+})();
+</script>
+
+<!-- INVENTARIO -->
+<div id="inventario" class="section">
+<style>
+.inv-filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.inv-chip{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:400;border:0.5px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:all .15s}
+.inv-chip.on{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:500}
+.inv-chip:hover:not(.on){background:var(--surface2)}
+.inv-search{flex:1;min-width:160px;padding:6px 12px;border:0.5px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none}
+.inv-search:focus{border-color:var(--accent)}
+.inv-table-wrap{overflow-x:auto}
+.inv-table{width:100%;border-collapse:collapse;font-size:13px;min-width:700px}
+.inv-table th{text-align:left;font-size:11px;font-weight:500;color:var(--muted);padding:8px 10px;border-bottom:0.5px solid var(--border);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.inv-table td{padding:10px 10px;border-bottom:0.5px solid var(--border);color:var(--text);vertical-align:middle}
+.inv-table tr:last-child td{border-bottom:none}
+.inv-table tbody tr{cursor:pointer;transition:background .12s}
+.inv-table tbody tr:hover td{background:var(--surface2)}
+.inv-table tbody tr.expanded td{background:var(--surface2)}
+.inv-detail-row td{padding:0!important;border-bottom:0.5px solid var(--border)}
+.inv-detail-inner{padding:12px 14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;background:var(--surface2)}
+.inv-detail-item .inv-dk{font-size:11px;color:var(--muted);margin-bottom:2px}
+.inv-detail-item .inv-dv{font-size:13px;color:var(--text);font-weight:500}
+.inv-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.ib-sfc{background:rgba(26,86,196,.1);color:#1a56c4;border:0.5px solid rgba(26,86,196,.2)}
+.ib-uiaf{background:rgba(14,164,122,.1);color:#0a7a5a;border:0.5px solid rgba(14,164,122,.2)}
+.ib-br{background:rgba(217,119,6,.1);color:#b45309;border:0.5px solid rgba(217,119,6,.2)}
+.ib-fog{background:rgba(163,45,45,.1);color:#a32d2d;border:0.5px solid rgba(163,45,45,.2)}
+.ib-tu{background:rgba(83,74,183,.1);color:#534ab7;border:0.5px solid rgba(83,74,183,.2)}
+.ib-exp{background:rgba(15,110,86,.1);color:#0f6e56;border:0.5px solid rgba(15,110,86,.2)}
+.ib-ok{background:rgba(14,164,122,.1);color:#0a7a5a;border:0.5px solid rgba(14,164,122,.2)}
+.ib-pend{background:rgba(217,119,6,.1);color:#b45309;border:0.5px solid rgba(217,119,6,.2)}
+.ib-freq{background:rgba(30,80,160,.06);color:var(--muted);border:0.5px solid var(--border)}
+.inv-empty{text-align:center;padding:2rem;color:var(--muted);font-size:13px}
+.inv-summary{font-size:12px;color:var(--muted);margin-bottom:10px}
+</style>
+
+<div class="card" style="overflow:visible">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+    <div class="card-label" style="margin:0">Inventario de reportes</div>
+    <a href="https://docs.google.com/spreadsheets/d/1mFBN36msy7qDiYEnKyBG1LTFg5O5A2bQXpC8rI8bwEQ/edit?gid=2028818982#gid=2028818982" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(26,86,196,.08);border:1px solid rgba(26,86,196,.2);border-radius:var(--radius);color:var(--accent);font-size:12px;font-weight:500;font-family:var(--font-body);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(26,86,196,.15)'" onmouseout="this.style.background='rgba(26,86,196,.08)'">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Ver inventario completo en Sheets ↗
+    </a>
+  </div>
+  <div class="inv-filter-bar">
+    <input class="inv-search" type="text" placeholder="Buscar reporte..." id="inv-search" oninput="filterInv()">
+    <div class="inv-chip on" onclick="setReg('',this)">Todos</div>
+    <div class="inv-chip" onclick="setReg('SFC',this)">SFC</div>
+    <div class="inv-chip" onclick="setReg('UIAF',this)">UIAF</div>
+    <div class="inv-chip" onclick="setReg('Banco República',this)">Banco República</div>
+    <div class="inv-chip" onclick="setReg('FOGAFIN',this)">FOGAFIN</div>
+    <div class="inv-chip" onclick="setReg('DIAN',this)">DIAN</div>
+    <div class="inv-chip" onclick="setReg('TransUnion',this)">TransUnion</div>
+    <div class="inv-chip" onclick="setReg('Experian',this)">Experian</div>
+    <div class="inv-chip" onclick="setReg('ICETEX',this)">ICETEX</div>
+  </div>
+  <div class="inv-summary" id="inv-summary">Mostrando todos los reportes</div>
+  <div id="inv-body"></div>
+</div>
+
+<div class="card" style="margin-top:1.25rem">
+  <div class="card-label">Reguladores</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+    <!-- EN IMPLEMENTACIÓN -->
+    <div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#0F6E56;border-bottom:2px solid #0F6E56;padding-bottom:8px;margin-bottom:12px;display:flex;align-items:center;gap:6px;"><i class="ti ti-circle-check" style="font-size:13px" aria-hidden="true"></i>En implementación</div>
+
+      <div style="padding:12px 14px;border-radius:10px;border:0.5px solid var(--border);border-left:3px solid rgba(15,110,86,.3);background:var(--surface);margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <div style="width:32px;height:32px;border-radius:8px;background:#E6F1FB;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="ti ti-building-bank" style="font-size:15px;color:#185FA5" aria-hidden="true"></i></div>
+          <div><div style="font-size:13px;font-weight:500;color:var(--text);">SFC</div><div style="font-size:11px;color:var(--muted);">38 reportes activos</div></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar-event" style="font-size:10px" aria-hidden="true"></i>Diario <strong style="color:var(--text);">7</strong></span>
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar-week" style="font-size:10px" aria-hidden="true"></i>Semanal <strong style="color:var(--text);">2</strong></span>
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar-week" style="font-size:10px" aria-hidden="true"></i>Bisemanal <strong style="color:var(--text);">1</strong></span>
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i>Mensual <strong style="color:var(--text);">15</strong></span>
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i>Trimestral <strong style="color:var(--text);">8</strong></span>
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i>Semestral <strong style="color:var(--text);">1</strong></span>
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i>Anual <strong style="color:var(--text);">3</strong></span>
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i>Esporádico <strong style="color:var(--text);">2</strong></span>
+        </div>
+      </div>
+
+      <div style="padding:12px 14px;border-radius:10px;border:0.5px solid var(--border);border-left:3px solid rgba(15,110,86,.3);background:var(--surface);margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <div style="width:32px;height:32px;border-radius:8px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="ti ti-building-bank" style="font-size:15px;color:#0F6E56" aria-hidden="true"></i></div>
+          <div><div style="font-size:13px;font-weight:500;color:var(--text);">Banco de la República</div><div style="font-size:11px;color:var(--muted);">4 reportes activos</div></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar-event" style="font-size:10px" aria-hidden="true"></i>Diario <strong style="color:var(--text);">1</strong></span>
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i>Esporádico <strong style="color:var(--text);">3</strong></span>
+        </div>
+      </div>
+
+      <div style="padding:12px 14px;border-radius:10px;border:0.5px solid var(--border);border-left:3px solid rgba(15,110,86,.3);background:var(--surface);margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <div style="width:32px;height:32px;border-radius:8px;background:#FAEEDA;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="ti ti-shield-check" style="font-size:15px;color:#854F0B" aria-hidden="true"></i></div>
+          <div><div style="font-size:13px;font-weight:500;color:var(--text);">UIAF</div><div style="font-size:11px;color:var(--muted);">4 reportes activos</div></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i>Mensual <strong style="color:var(--text);">4</strong></span>
+        </div>
+      </div>
+
+      <div style="padding:12px 14px;border-radius:10px;border:0.5px solid var(--border);border-left:3px solid rgba(15,110,86,.3);background:var(--surface);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <div style="width:32px;height:32px;border-radius:8px;background:#EAF3DE;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="ti ti-lock" style="font-size:15px;color:#3B6D11" aria-hidden="true"></i></div>
+          <div><div style="font-size:13px;font-weight:500;color:var(--text);">FOGAFIN</div><div style="font-size:11px;color:var(--muted);">3 reportes activos</div></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i>Trimestral <strong style="color:var(--text);">2</strong></span>
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i>Anual <strong style="color:var(--text);">1</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIN INICIAR -->
+    <div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--border);padding-bottom:8px;margin-bottom:12px;display:flex;align-items:center;gap:6px;"><i class="ti ti-clock" style="font-size:13px" aria-hidden="true"></i>Sin iniciar</div>
+
+      <div style="padding:12px 14px;border-radius:10px;border:0.5px solid var(--border);background:var(--surface);margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <div style="width:32px;height:32px;border-radius:8px;background:rgba(30,80,160,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="ti ti-receipt-tax" style="font-size:15px;color:#185FA5" aria-hidden="true"></i></div>
+          <div><div style="font-size:13px;font-weight:500;color:var(--text);">DIAN</div><div style="font-size:11px;color:var(--muted);">3 reportes activos</div></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i>Anual <strong style="color:var(--text);">3</strong></span>
+        </div>
+      </div>
+
+      <div style="padding:12px 14px;border-radius:10px;border:0.5px solid var(--border);background:var(--surface);margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <div style="width:32px;height:32px;border-radius:8px;background:rgba(83,74,183,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:600;color:#534ab7;">TU</div>
+          <div><div style="font-size:13px;font-weight:500;color:var(--text);">TransUnion</div><div style="font-size:11px;color:var(--muted);">1 reporte activo</div></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i>Mensual <strong style="color:var(--text);">1</strong></span>
+        </div>
+      </div>
+
+      <div style="padding:12px 14px;border-radius:10px;border:0.5px solid var(--border);background:var(--surface);margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <div style="width:32px;height:32px;border-radius:8px;background:rgba(15,110,86,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:600;color:#0F6E56;">EX</div>
+          <div><div style="font-size:13px;font-weight:500;color:var(--text);">Experian</div><div style="font-size:11px;color:var(--muted);">1 reporte activo</div></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i>Mensual <strong style="color:var(--text);">1</strong></span>
+        </div>
+      </div>
+
+      <div style="padding:12px 14px;border-radius:10px;border:0.5px solid var(--border);background:var(--surface);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <div style="width:32px;height:32px;border-radius:8px;background:rgba(133,79,11,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="ti ti-school" style="font-size:15px;color:#854F0B" aria-hidden="true"></i></div>
+          <div><div style="font-size:13px;font-weight:500;color:var(--text);">ICETEX</div><div style="font-size:11px;color:var(--muted);">6 reportes activos</div></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <span style="background:var(--surface2);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--muted);font-size:10px;display:flex;align-items:center;gap:3px;"><i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i>Mensual <strong style="color:var(--text);">6</strong></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+<!-- DOCUMENTACIÓN -->
+<div id="docs" class="section">
+  <div style="margin-bottom:1.25rem;">
+    <div class="doc-folder">
+      <div class="doc-folder-header" onclick="toggleFolder('f1','c1')">
+        <svg class="folder-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span class="folder-name">Procesos operativos</span>
+        <span class="folder-count">4 documentos</span>
+        <svg class="folder-chevron" id="c1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="doc-folder-body" id="f1">
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span class="doc-name">Manual de procesos — ciclo de reporte</span><span class="badge b-green">Vigente</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="doc-name">Instructivo de extracción de datos</span><span class="badge b-green">Vigente</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="doc-name">Flujograma de aprobaciones</span><span class="badge b-green">Vigente</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="doc-name">Protocolo de errores y re-envíos</span><span class="badge b-amber">En revisión</span></div>
+      </div>
+    </div>
+    <div class="doc-folder">
+      <div class="doc-folder-header" onclick="toggleFolder('f2','c2')">
+        <svg class="folder-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span class="folder-name">Inventario y fichas técnicas</span>
+        <span class="folder-count">8 documentos</span>
+        <svg class="folder-chevron" id="c2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="doc-folder-body" id="f2">
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="doc-name">Ficha técnica — Reporte 088</span><span class="badge b-green">Completa</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="doc-name">Ficha técnica — NIIF 9</span><span class="badge b-green">Completa</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="doc-name">Ficha técnica — SARLAFT</span><span class="badge b-green">Completa</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="doc-name">Ficha técnica — SIREG</span><span class="badge b-green">Completa</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="doc-name">Diccionario de campos regulatorios</span><span class="badge b-green">Completa</span></div>
+      </div>
+    </div>
+    <div class="doc-folder">
+      <div class="doc-folder-header" onclick="toggleFolder('f3','c3')">
+        <svg class="folder-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span class="folder-name">Controles y evidencias</span>
+        <span class="folder-count">5 documentos</span>
+        <svg class="folder-chevron" id="c3" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="doc-folder-body" id="f3">
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="doc-name">Matriz de controles</span><span class="badge b-green">Vigente</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="doc-name">Checklist mensual de cierre</span><span class="badge b-green">Vigente</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="doc-name">Log de aprobaciones</span><span class="badge b-green">Vigente</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="doc-name">Evidencias de envío por regulador</span><span class="badge b-green">Vigente</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="doc-name">Registro de incidencias</span><span class="badge b-green">Vigente</span></div>
+      </div>
+    </div>
+    <div class="doc-folder">
+      <div class="doc-folder-header" onclick="toggleFolder('f4','c4')">
+        <svg class="folder-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span class="folder-name">Normativa regulatoria</span>
+        <span class="folder-count">6 documentos</span>
+        <svg class="folder-chevron" id="c4" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="doc-folder-body" id="f4">
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M3 7l9-4 9 4"/></svg><span class="doc-name">Circulares vigentes SFC</span><span class="badge b-green">Actualizado</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M3 7l9-4 9 4"/></svg><span class="doc-name">Resoluciones UIAF aplicables</span><span class="badge b-green">Actualizado</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M3 7l9-4 9 4"/></svg><span class="doc-name">Manual SIREG — Banco República</span><span class="badge b-amber">En revisión</span></div>
+        <div class="doc-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M3 7l9-4 9 4"/></svg><span class="doc-name">Matriz de cambios normativos 2024–2025</span><span class="badge b-green">Vigente</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTROLES -->
+<div id="controles" class="section">
+  <div class="card">
+    <div class="ctrl-group-title">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      Controles preventivos
+    </div>
+    <div class="control-item">
+      <div class="ctrl-icon" style="background:rgba(220,38,38,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+      <div style="flex:1"><div class="ctrl-name">Validación de datos antes del cierre</div><div class="ctrl-meta">Cruces con sistemas origen</div></div>
+    </div>
+    <div class="control-item">
+      <div class="ctrl-icon" style="background:rgba(220,38,38,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+      <div style="flex:1"><div class="ctrl-name">Checklist de preparación por reporte</div><div class="ctrl-meta">Insumos previos obligatorios antes de construcción · incluye data, manuales y cargues manuales</div></div>
+    </div>
+    <div class="control-item">
+      <div class="ctrl-icon" style="background:rgba(220,38,38,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg></div>
+      <div style="flex:1"><div class="ctrl-name">Conciliación vs período anterior</div><div class="ctrl-meta">Se parametriza un umbral de variación; si se supera, se genera un alertamiento automático para justificación</div></div>
+    </div>
+    <div class="control-item">
+      <div class="ctrl-icon" style="background:rgba(220,38,38,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+      <div style="flex:1"><div class="ctrl-name">Validación técnica de planos</div><div class="ctrl-meta">Verificación de la estructura del plano antes de la carga al portal de transmisión de información</div></div>
+    </div>
+    <div class="control-item">
+      <div class="ctrl-icon" style="background:rgba(220,38,38,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+      <div style="flex:1"><div class="ctrl-name">Validación técnica estructura plano vs reporte Excel</div><div class="ctrl-meta">Cruce entre el plano definido y el reporte generado en Excel para verificar coherencia de campos y estructura</div></div>
+    </div>
+    <div class="control-item">
+      <div class="ctrl-icon" style="background:rgba(220,38,38,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+      <div style="flex:1"><div class="ctrl-name">Cruces y conciliaciones contables</div><div class="ctrl-meta">Verificación de consistencia entre los valores del reporte y los saldos contables del período</div></div>
+    </div>
+    <div class="control-item">
+      <div class="ctrl-icon" style="background:rgba(220,38,38,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+      <div style="flex:1"><div class="ctrl-name">Cruces con bases de generación de reportes</div><div class="ctrl-meta">Validación de los datos del reporte contra las bases fuente utilizadas en su construcción</div></div>
+    </div>
+    <div class="control-item">
+      <div class="ctrl-icon" style="background:rgba(220,38,38,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div>
+      <div style="flex:1"><div class="ctrl-name">Cruces entre formatos por periodicidad</div><div class="ctrl-meta">Conciliación de cifras entre formatos semanales, mensuales y trimestrales para garantizar coherencia entre formatos y períodos</div></div>
+    </div>
+
+    <div class="ctrl-group-title" style="margin-top:1.5rem;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Controles de aprobación
+    </div>
+    <div class="control-item">
+      <div class="ctrl-icon" style="background:rgba(14,164,122,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0a7a5a" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div style="flex:1"><div class="ctrl-name">Doble revisión antes de envío</div><div class="ctrl-meta">Validación regulatoria y funcional</div></div>
+    </div>
+    <div class="control-item">
+      <div class="ctrl-icon" style="background:rgba(14,164,122,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0a7a5a" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+      <div style="flex:1"><div class="ctrl-name">Confirmación de recepción del regulador</div><div class="ctrl-meta">Acuse de recibo archivado por reporte y fecha</div></div>
+    </div>
+
+    <div class="ctrl-group-title" style="margin-top:1.5rem;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 0 .5-4"/><polyline points="3 3 3 7 7 7"/></svg>
+      Controles de trazabilidad
+    </div>
+    <div class="control-item">
+      <div class="ctrl-icon" style="background:rgba(217,119,6,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 0 .5-4"/><polyline points="3 3 3 7 7 7"/></svg></div>
+      <div style="flex:1"><div class="ctrl-name">Log de cambios por reporte</div><div class="ctrl-meta">Registro de quién modificó, qué y cuándo</div></div>
+    </div>
+    <div class="control-item">
+      <div class="ctrl-icon" style="background:rgba(217,119,6,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      <div style="flex:1"><div class="ctrl-name">Repositorio seguro en Drive por regulador</div><div class="ctrl-meta">Almacenamiento organizado en repositorio seguro en Google Drive con acceso controlado</div></div>
+    </div>
+    <div class="control-item">
+      <div class="ctrl-icon" style="background:rgba(217,119,6,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+      <div style="flex:1"><div class="ctrl-name">Alertas de vencimiento de plazos</div><div class="ctrl-meta">Notificación D-3 y D-1 antes de fecha límite para las áreas funcionales</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROYECTOS -->
+<div id="proyectos" class="section">
+
+  <!-- 1. Construcción del área -->
+  <div class="proj-card" onclick="toggleProj('p3')">
+    <div class="proj-header">
+      <div class="proj-icon" style="background:rgba(245,166,35,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5a623" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <span class="proj-title">Construcción y mejora del área</span>
+      <span class="badge b-amber">En curso · 50%</span>
+    </div>
+    <div class="proj-body">Inventario completo, procesos documentados, controles implementados y equipo estructurado. Incluye tablero de seguimiento e indicadores de la operación.</div>
+    <div class="proj-tags"><span class="badge b-gray">Gobernanza</span><span class="badge b-gray">Tablero de seguimiento</span><span class="badge b-gray">Indicadores operación</span></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Avance general</span><span>50%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+    </div>
+  </div>
+  <div class="proj-detail-panel" id="p3">
+    <div class="proj-detail-title">Lo que se construyó</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a7a5a" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Inventario de reportes documentados</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a7a5a" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Procesos formalizados y manuales escritos</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a7a5a" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Matriz de controles implementada</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a7a5a" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Relación directa con reguladores establecida</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a56c4" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Tablero de seguimiento e indicadores de la operación — en curso</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a7a5a" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>98% de reportes entregados a tiempo</div>
+  </div>
+
+  <!-- 2. Implementación SIREG -->
+  <div class="proj-card" onclick="toggleProj('p1')">
+    <div class="proj-header">
+      <div class="proj-icon" style="background:rgba(26,86,196,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a56c4" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      <span class="proj-title">Implementación TSI — SIREG</span>
+      <span class="badge b-purple">En curso · 60%</span>
+    </div>
+    <div class="proj-body">Implementación de la herramienta SIREG con TSI para automatizar la generación y transmisión de reportes al Banco de la República. Elimina carga manual y reduce riesgo operativo.</div>
+    <div class="proj-tags"><span class="badge b-gray">TSI</span><span class="badge b-gray">Regulatorio</span><span class="badge b-gray">Automatización</span></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Avance general</span><span>65%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+    </div>
+  </div>
+  <div class="proj-detail-panel" id="p1">
+    <div class="proj-detail-title">Hitos del proyecto</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a7a5a" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Diagnóstico y mapeo de fuentes — completado</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a7a5a" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Diseño del modelo de integración — completado</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a56c4" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Implementación herramienta con TSI — en curso</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Pruebas con datos reales — pendiente</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Go live y monitoreo — por definir</div>
+  </div>
+
+  <!-- 3. FOGAFIN -->
+  <div class="proj-card" onclick="toggleProj('p5')">
+    <div class="proj-header">
+      <div class="proj-icon" style="background:rgba(163,45,45,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a32d2d" stroke-width="2"><path d="M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11M8 10v11M12 10v11M16 10v11M20 10v11"/></svg></div>
+      <span class="proj-title">Cambio normativo — Formato de depósitos FOGAFIN</span>
+      <span class="badge b-red">Sin iniciar</span>
+    </div>
+    <div class="proj-body">Cambio normativo en proyecto de norma. Afecta los formatos de depósitos reportados a FOGAFIN. Pruebas programadas para noviembre 2026.</div>
+    <div class="proj-tags"><span class="badge b-gray">FOGAFIN</span><span class="badge b-gray">Formato depósitos</span><span class="badge b-red">Proyecto de norma</span></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Avance general</span><span>10% — En curso</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:2%;background:#a32d2d"></div></div>
+    </div>
+  </div>
+  <div class="proj-detail-panel" id="p5">
+    <div class="proj-detail-title">Hitos</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Norma en proyecto — pendiente publicación oficial</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Análisis de impacto en reportes de depósitos — pendiente</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Pruebas — noviembre 2026</div>
+  </div>
+
+  <!-- 4. Proyecto cartera (sin NIIF 9 en tags) -->
+  <div class="proj-card" onclick="toggleProj('p2')">
+    <div class="proj-header">
+      <div class="proj-icon" style="background:rgba(14,164,122,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0a7a5a" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+      <span class="proj-title">Proyecto cartera — reportes asociados</span>
+      <span class="badge b-teal">En curso · 10%</span>
+    </div>
+    <div class="proj-body">El proyecto de cartera genera cambios en la estructura de datos que afectan directamente el reporte de cartera a la SFC. El área lidera la adaptación regulatoria.</div>
+    <div class="proj-tags"><span class="badge b-gray">Reporte cartera</span><span class="badge b-gray">SFC</span></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Avance general</span><span>10%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:10%"></div></div>
+    </div>
+  </div>
+  <div class="proj-detail-panel" id="p2">
+    <div class="proj-detail-title">Reportes impactados y acciones</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a7a5a" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Mapeo de cambios en estructura de cartera</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a56c4" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Actualización fichas técnicas reporte cartera — en curso</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Validación formato nuevo con SFC — pendiente</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Primera entrega con nueva estructura — próximo cierre</div>
+  </div>
+
+  <!-- 5. MURIC -->
+  <div class="proj-card" onclick="toggleProj('p4')">
+    <div class="proj-header">
+      <div class="proj-icon" style="background:rgba(217,119,6,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+      <span class="proj-title">MURIC</span>
+      <span class="badge b-amber">En curso · 20%</span>
+    </div>
+    <div class="proj-body">Pendiente — definir la implementación de MURIC, in-house o con TSI. Pendiente definición de migración del producto.</div>
+    <div class="proj-tags"><span class="badge b-gray">Decisión pendiente</span><span class="badge b-gray">Migración producto</span></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Avance general</span><span>10%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+    </div>
+  </div>
+  <div class="proj-detail-panel" id="p4">
+    <div class="proj-detail-title">Hitos</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Definir implementación: in-house o con TSI — pendiente</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Definición de migración del producto — pendiente</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Pruebas — diciembre 2026</div>
+  </div>
+
+  <!-- 6. MUPRA -->
+  <div class="proj-card" onclick="toggleProj('p6')">
+    <div class="proj-header">
+      <div class="proj-icon" style="background:rgba(26,86,196,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a56c4" stroke-width="2"><path d="M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11M8 10v11M12 10v11M16 10v11M20 10v11"/></svg></div>
+      <span class="proj-title">Cambio normativo MUPRA — Formato 527</span>
+      <span class="badge b-red">Sin iniciar</span>
+    </div>
+    <div class="proj-body">Cambio normativo regulatorio que afecta el formato 527 de pruebas de resistencia (stress testing). Normativa en proceso de publicación oficial.</div>
+    <div class="proj-tags"><span class="badge b-gray">SFC</span><span class="badge b-gray">F527</span><span class="badge b-red">Proyecto de norma</span></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Avance general</span><span>10% — En curso</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:2%;background:#a32d2d"></div></div>
+    </div>
+  </div>
+  <div class="proj-detail-panel" id="p6">
+    <div class="proj-detail-title">Hitos</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>MUPRA pendiente publicación oficial</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Análisis de impacto en formato 527 — pendiente</div>
+    <div class="milestone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Adaptación y pruebas — por definir</div>
+  </div>
+
+</div>
+
+<!-- OUR TEAM -->
+<div id="ourteam" class="section">
+  <div class="card">
+    <div class="card-label">Equipo</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:rgba(26,86,196,.12);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--accent);margin-bottom:12px;">YN</div>
+        <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:2px;">Yesica Nova</div>
+        <div style="font-size:12px;color:var(--accent);font-weight:500;margin-bottom:8px;">Regulatory Reporting Manager</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;">Orquestador del área · Supervisión · Operación diaria · Nuevos proyectos · Aprobaciones · Relación con reguladores · Creación de actividades de valor para el área</div>
+      </div>
+
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:rgba(14,164,122,.1);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;font-size:15px;color:#0a7a5a;margin-bottom:12px;">SR</div>
+        <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:2px;">Stefanny Rincón</div>
+        <div style="font-size:12px;color:#0a7a5a;font-weight:500;margin-bottom:8px;">Regulatory Reporting Specialist</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;">Operación diaria · Nuevos proyectos · Controles · Automatizaciones · Gestión de documentación · Mejora de procesos · Creación de actividades de valor para el área</div>
+      </div>
+
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;opacity:.75;">
+        <div style="width:44px;height:44px;border-radius:50%;background:rgba(217,119,6,.08);display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+        </div>
+        <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:2px;">Vacante</div>
+        <div style="font-size:12px;color:#b45309;font-weight:500;margin-bottom:8px;">Analyst — Por construir</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;">Manejo de formatos de crédito · Migración del Crédito</div>
+        <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;"><span class="badge b-amber">Por construir</span><span class="badge b-gray">Stand by</span></div>
+      </div>
+
+      <div style="background:var(--surface);border:2px dashed rgba(24,95,165,.35);border-radius:var(--radius-lg);padding:18px;">
+        <div style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#185FA5;background:#E6F1FB;padding:3px 9px;border-radius:20px;margin-bottom:12px;"><i class="ti ti-sparkles" style="font-size:11px" aria-hidden="true"></i></div>
+        <div style="width:44px;height:44px;border-radius:50%;background:#EEEDFE;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:20px;color:#3C3489;"><i class="ti ti-database" aria-hidden="true"></i></div>
+        <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:2px;">Por definir</div>
+        <div style="font-size:12px;color:#3C3489;font-weight:500;margin-bottom:8px;">Analytics Engineer — Regulatory Data</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;">Dedicación exclusiva a insumos regulatorios · Generación y validación de tablas · Soporte directo al área de Reporting</div>
+        <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="font-size:10px;padding:2px 9px;border-radius:20px;font-weight:500;background:#EEEDFE;color:#3C3489;border:1px solid rgba(83,74,183,.25);">Existe en Data</span>
+          <span style="font-size:10px;padding:2px 9px;border-radius:20px;font-weight:500;background:rgba(24,95,165,.08);color:#185FA5;border:1px solid rgba(24,95,165,.2);">Sin dedicación exclusiva</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Áreas funcionales y técnicas con las que trabajamos</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+      <!-- TÉCNICAS -->
+      <div>
+        <div style="font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Técnicas
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);border-left:3px solid var(--accent);">
+            <div style="font-size:13px;font-weight:500;color:var(--text);">Data</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Julio & Andrés</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);border-left:3px solid var(--accent);">
+            <div style="font-size:13px;font-weight:500;color:var(--text);">Financial Systems</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Sibel</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);border-left:3px solid var(--accent);">
+            <div style="font-size:13px;font-weight:500;color:var(--text);">Kordev</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Elmer, José & Reyes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FUNCIONALES -->
+      <div>
+        <div style="font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#0a7a5a;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Funcionales
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);border-left:3px solid #0a7a5a;">
+            <div style="font-size:13px;font-weight:500;color:var(--text);">Contabilidad</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Jorge & Vanessa</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);border-left:3px solid #0a7a5a;">
+            <div style="font-size:13px;font-weight:500;color:var(--text);">Operaciones</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Raúl & Karen</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);border-left:3px solid #0a7a5a;">
+            <div style="font-size:13px;font-weight:500;color:var(--text);">Riesgos</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Andrés B. & Erika</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);border-left:3px solid #0a7a5a;">
+            <div style="font-size:13px;font-weight:500;color:var(--text);">Sarlaft</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Ciro & Juan Pablo</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);border-left:3px solid #0a7a5a;">
+            <div style="font-size:13px;font-weight:500;color:var(--text);">Legal</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Sofía & Ma. José</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);border-left:3px solid #0a7a5a;">
+            <div style="font-size:13px;font-weight:500;color:var(--text);">Producto</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Mónica & Rodrigo</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);border-left:3px solid #0a7a5a;">
+            <div style="font-size:13px;font-weight:500;color:var(--text);">SI & CI</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Carolina & Cristian</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TERCEROS -->
+<div id="terceros" class="section">
+
+  <div class="card">
+    <div class="card-label">Proveedores</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+
+      <!-- TSI -->
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <div style="width:38px;height:38px;border-radius:var(--radius);background:rgba(26,86,196,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a56c4" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:500;color:var(--text);">TSI</div>
+            <div style="font-size:12px;color:var(--muted);">Implementación herramienta SIREG · <a href="https://sireg-qa.addi-staging.com/web/wfrLogin.aspx?ReturnUrl=%2f" target="_blank" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(26,86,196,.3);">Ver plataforma ↗</a></div>
+          </div>
+          <span class="badge b-purple">Activo</span>
+        </div>
+        <div style="background:var(--surface);border-radius:var(--radius);padding:10px 12px;font-size:12px;color:var(--muted);line-height:1.6;">
+          Con TSI se tienen el 90% de los formatos que remitimos a los entes de control
+        </div>
+      </div>
+
+      <!-- Firmas digitales -->
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <div style="width:38px;height:38px;border-radius:var(--radius);background:rgba(14,164,122,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0a7a5a" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:500;color:var(--text);">Firmas digitales</div>
+            <div style="font-size:12px;color:var(--muted);">Proveedores de firma digital para reportes regulatorios</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--surface);border-radius:var(--radius);">
+            <div>
+              <div style="font-size:13px;font-weight:500;color:var(--text);">Andes</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:1px;">Contador · Representante Legal Suplente</div>
+            </div>
+            <span class="badge b-green">Activo</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--surface);border-radius:var(--radius);">
+            <div>
+              <div style="font-size:13px;font-weight:500;color:var(--text);">GSE</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:1px;">Representante Legal · Director Legal</div>
+            </div>
+            <span class="badge b-amber">En proceso</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPMG -->
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <div style="width:38px;height:38px;border-radius:var(--radius);background:#ffffff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b6fd4" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:500;color:var(--text);">KPMG — Revisoría Fiscal</div>
+            <div style="font-size:12px;color:var(--muted);">Firma de revisoría fiscal · Revisión y certificación de reportes</div>
+          </div>
+          <span class="badge b-amber">En proceso</span>
+        </div>
+        <div style="background:var(--surface);border-radius:var(--radius);padding:10px 12px;font-size:12px;color:var(--muted);line-height:1.6;">
+          KPMG actúa como revisor fiscal de Addi CF. Certifica y revisa los reportes regulatorios que requieren firma de revisoría fiscal (RF) antes de su transmisión a los entes de control.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</main>
+
+<script>
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleFolder(id, chevId) {
+  const body = document.getElementById(id);
+  const chev = document.getElementById(chevId);
+  const open = body.classList.toggle('open');
+  chev.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+function toggleProj(id) {
+  document.getElementById(id).classList.toggle('visible');
+}
+
+const REG_CLASS = {'SFC':'ib-sfc','UIAF':'ib-uiaf','Banco República':'ib-br','FOGAFIN':'ib-fog','TransUnion':'ib-tu','Experian':'ib-exp','DIAN':'ib-fog','ICETEX':'ib-tu'};
+
+const REPORTES = [
+  {nombre:'351 — Composición del portafolio de inversiones',reg:'SFC',freq:'Diario',funcional:'Contabilidad / Riesgos',corte:'Diario',transmision:'Hasta 2do día hábil siguiente',impl:'TSI',firma:'RL',resp:'Jorge Andres Salamanca / Erika Cardenas',backup:'Vannessa Palma / Hector Ovalle'},
+  {nombre:'397 — Operaciones repo, simultáneas y TTV',reg:'SFC',freq:'Diario',funcional:'Tesorería',corte:'Diario',transmision:'Hasta 2do día hábil siguiente',impl:'TSI',firma:'RL',resp:'Jorge Andres Salamanca / Erika Cardenas',backup:'Vannessa Palma / Hector Ovalle'},
+  {nombre:'410 — SmartSupervision: Queja o reclamo',reg:'SFC',freq:'Diario',funcional:'CX',corte:'Diario',transmision:'Hasta 23:59',impl:'TSI',firma:'—',resp:'Ricardo Andres Lopez Esquivel',backup:'Ricardo Andres Lopez Esquivel'},
+  {nombre:'411 — SmartSupervision: Gestión de la queja',reg:'SFC',freq:'Diario',funcional:'CX',corte:'Diario',transmision:'Hasta 23:59',impl:'TSI',firma:'—',resp:'Ricardo Andres Lopez Esquivel',backup:'Ricardo Andres Lopez Esquivel'},
+  {nombre:'441 — Tasas de interés de captación y mercado monetario',reg:'SFC',freq:'Diario',funcional:'Operaciones',corte:'Día hábil anterior',transmision:'Antes 8:30 a.m.',impl:'TSI',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'386 — Valor en riesgo por módulos',reg:'SFC',freq:'Diario',funcional:'Riesgos',corte:'Mismo día',transmision:'Antes 9 a.m. día hábil siguiente',impl:'TSI',firma:'RL',resp:'Erika Yulieth Cardenas Garzon',backup:'Andres Felipe Buelvas Porto'},
+  {nombre:'424 — Tarifas de productos de depósito',reg:'SFC',freq:'Diario',funcional:'Producto',corte:'Cuando cambia la información',transmision:'En tiempo real',impl:'TSI',firma:'RL',resp:'Juan Pablo Garcia',backup:'Monica Adriana Marino Gutierrez'},
+  {nombre:'443 — Encaje',reg:'SFC',freq:'Bisemanal',funcional:'Tesorería / Contabilidad',corte:'Según calendario',transmision:'7 días calendario siguientes al corte',impl:'TSI',firma:'RL y RF',resp:'Jorge Andres Salamanca Rodriguez',backup:'Vannessa Palma'},
+  {nombre:'281 — Principales cuentas activas y pasivas',reg:'SFC',freq:'Semanal',funcional:'Contabilidad',corte:'Último día hábil semana anterior',transmision:'Miércoles',impl:'TSI',firma:'RL',resp:'Thomas Cubillos',backup:'Andres Gomez'},
+  {nombre:'458 — Flujos de caja y riesgo de liquidez',reg:'SFC',freq:'Semanal',funcional:'Riesgos',corte:'Viernes',transmision:'Primer día hábil siguiente hasta 11:30 p.m.',impl:'TSI',firma:'RL',resp:'Erika Yulieth Cardenas Garzon',backup:'Andres Felipe Buelvas Porto'},
+  {nombre:'00 — Estados financieros mensuales',reg:'SFC',freq:'Mensual',funcional:'Contabilidad',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL, RF y C',resp:'Jorge Andres Salamanca Rodriguez',backup:'Vannessa Palma'},
+  {nombre:'413 — Operaciones canales de distribución',reg:'SFC',freq:'Mensual',funcional:'Operaciones',corte:'Último día calendario del mes',transmision:'10 días corrientes siguientes',impl:'TSI',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'239 — Margen de solvencia y patrimonio',reg:'SFC',freq:'Mensual',funcional:'Riesgos / Contabilidad',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL, RF y C',resp:'Jorge Andres Salamanca Rodriguez',backup:'Vannessa Palma'},
+  {nombre:'459 — Concentración de captaciones y bonos',reg:'SFC',freq:'Mensual',funcional:'Operaciones',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL, RF y C',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'238 — Coeficiente de financiación estable neto CFEN',reg:'SFC',freq:'Mensual',funcional:'Riesgos',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL',resp:'Erika Yulieth Cardenas Garzon',backup:'Andres Felipe Buelvas Porto'},
+  {nombre:'458 — Flujos de caja y riesgo de liquidez',reg:'SFC',freq:'Mensual',funcional:'Riesgos',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL',resp:'Erika Yulieth Cardenas Garzon',backup:'Andres Felipe Buelvas Porto'},
+  {nombre:'409 — Sectorización cuentas activo y pasivo',reg:'SFC',freq:'Mensual',funcional:'Contabilidad',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL y RF',resp:'Jorge Andres Salamanca Rodriguez',backup:'Vannessa Palma'},
+  {nombre:'466 — Tarjetas de crédito y débito',reg:'SFC',freq:'Mensual',funcional:'Operaciones',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'474 — Clientes principales de captación',reg:'SFC',freq:'Mensual',funcional:'Operaciones',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'417 — Operaciones alertadas, inusuales y sospechosas',reg:'SFC',freq:'Mensual',funcional:'Cumplimiento',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL',resp:'Juan Camilo Mendez Lanas',backup:'Ciro Humberto Valero Parra'},
+  {nombre:'427 — Control de Ley: Límites grandes exposiciones',reg:'SFC',freq:'Mensual',funcional:'Riesgos',corte:'Último día del mes',transmision:'3 días hábiles siguientes al CUIF',impl:'Logic / TSI',firma:'RL',resp:'Erika Yulieth Cardenas Garzon',backup:'Andres Felipe Buelvas Porto'},
+  {nombre:'428 — Control de Ley: Grandes exposiciones y concentración',reg:'SFC',freq:'Mensual',funcional:'Riesgos',corte:'Último día del mes',transmision:'3 días hábiles siguientes al CUIF',impl:'Logic / TSI',firma:'RL',resp:'Erika Yulieth Cardenas Garzon',backup:'Andres Felipe Buelvas Porto'},
+  {nombre:'429 — Control de Ley: Garantías idóneas',reg:'SFC',freq:'Mensual',funcional:'Riesgos',corte:'Último día del mes',transmision:'3 días hábiles siguientes al CUIF',impl:'Logic / TSI',firma:'RL',resp:'Erika Yulieth Cardenas Garzon',backup:'Andres Felipe Buelvas Porto'},
+  {nombre:'433 — Grupos conectados de contrapartes',reg:'SFC',freq:'Mensual',funcional:'Riesgos',corte:'Último día del mes',transmision:'3 días hábiles siguientes al CUIF',impl:'Logic / TSI',firma:'RL',resp:'Erika Yulieth Cardenas Garzon',backup:'Andres Felipe Buelvas Porto'},
+  {nombre:'419 — Flujos RTILB bandas de tiempo',reg:'SFC',freq:'Mensual',funcional:'Riesgos',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'Logic / TSI',firma:'RL',resp:'Erika Yulieth Cardenas Garzon',backup:'Andres Felipe Buelvas Porto'},
+  {nombre:'420 — Escenarios VEP y MNI',reg:'SFC',freq:'Semestral',funcional:'Riesgos',corte:'30 junio y 31 diciembre',transmision:'20 días calendario siguientes',impl:'Logic / TSI',firma:'RL',resp:'Erika Yulieth Cardenas Garzon',backup:'Andres Felipe Buelvas Porto'},
+  {nombre:'211 — Acciones y composición accionaria',reg:'SFC',freq:'Trimestral',funcional:'Legal',corte:'Mar 31, Jun 30, Sep 30, Dic 31',transmision:'10 días hábiles siguientes al CUIF',impl:'TSI',firma:'RL',resp:'Sofia Velez Alvarez',backup:'Maria Jose Aya Clavijo'},
+  {nombre:'529 — Accionistas de segundo y tercer nivel',reg:'SFC',freq:'Trimestral',funcional:'Legal',corte:'Mar 31, Jun 30, Sep 30, Dic 31',transmision:'10 días hábiles siguientes al CUIF',impl:'TSI',firma:'RL',resp:'Sofia Velez Alvarez',backup:'Maria Jose Aya Clavijo'},
+  {nombre:'322 — Captaciones y colocaciones por municipio',reg:'SFC',freq:'Trimestral',funcional:'Contabilidad',corte:'Mar 31, Jun 30, Sep 30, Dic 31',transmision:'10 días hábiles siguientes al CUIF',impl:'TSI',firma:'RL',resp:'Thomas Cubillos',backup:'Andres Gomez'},
+  {nombre:'534 — Uso de productos y servicios financieros',reg:'SFC',freq:'Trimestral',funcional:'Operaciones',corte:'Mar 31, Jun 30, Sep 30, Dic 31',transmision:'30 días calendario siguientes',impl:'TSI',firma:'RL y RF',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'408 — Métricas e indicadores SI y CS',reg:'SFC',freq:'Trimestral',funcional:'Seguridad de la información',corte:'Mar 31, Jun 30, Sep 30, Dic 31',transmision:'15 días calendario siguientes',impl:'TSI',firma:'RL',resp:'Cristian Felipe Gonzalez Barona',backup:'Carolina Zuñiga Ospina'},
+  {nombre:'460 — Inversiones obligatorias en TDAs',reg:'SFC',freq:'Trimestral',funcional:'Tesorería / Contabilidad',corte:'Mar 31, Jun 30, Sep 30, Dic 31',transmision:'10 días calendario siguientes',impl:'TSI',firma:'RL y RF',resp:'Jorge Andres Salamanca Rodriguez',backup:'Vannessa Palma'},
+  {nombre:'PDF — Estados financieros y notas',reg:'SFC',freq:'Trimestral',funcional:'Contabilidad',corte:'Mar 31, Jun 30, Sep 30, Dic 31',transmision:'45 días calendario siguientes',impl:'In-house',firma:'RL, RF y C',resp:'Jorge Andres Salamanca Rodriguez',backup:'Vannessa Palma'},
+  {nombre:'XBRL — Estados financieros',reg:'SFC',freq:'Trimestral',funcional:'Contabilidad',corte:'Mar 31, Jun 30, Sep 30, Dic 31',transmision:'45 días calendario siguientes',impl:'TSI',firma:'RL, RF y C',resp:'Jorge Andres Salamanca Rodriguez',backup:'Vannessa Palma'},
+  {nombre:'321 — Base gravable industria y comercio',reg:'SFC',freq:'Anual',funcional:'Contabilidad',corte:'31 diciembre',transmision:'10 primeros días hábiles de marzo',impl:'TSI',firma:'RL, RF y C',resp:'Jorge Andres Salamanca Rodriguez',backup:'Vannessa Palma'},
+  {nombre:'525 — Cuentas PUC industria y comercio',reg:'SFC',freq:'Anual',funcional:'Contabilidad',corte:'31 diciembre',transmision:'10 primeros días hábiles de marzo',impl:'TSI',firma:'RL, RF y C',resp:'Jorge Andres Salamanca Rodriguez',backup:'Vannessa Palma'},
+  {nombre:'527 — Pruebas de resistencia',reg:'SFC',freq:'Anual',funcional:'Finanzas',corte:'31 diciembre',transmision:'Último día hábil de julio',impl:'TSI',firma:'RL',resp:'Jorge Andres Salamanca Rodriguez',backup:'Vannessa Palma'},
+  {nombre:'401-402 — Apoyo transitorio de liquidez ATL',reg:'SFC',freq:'Esporádico',funcional:'Tesorería',corte:'Esporádica',transmision:'Esporádica',impl:'TSI',firma:'RL',resp:'Michael Cobos',backup:'Viviana Saaibi Melendez'},
+  {nombre:'Encuesta BR',reg:'Banco República',freq:'Diario',funcional:'Contabilidad',corte:'Diario',transmision:'Hasta 23:59 del 2do día hábil siguiente',impl:'TSI',firma:'RL',resp:'Jorge Andres Salamanca Rodriguez',backup:'Vannessa Palma'},
+  {nombre:'ATL Anexo 5',reg:'Banco República',freq:'Esporádico',funcional:'Tesorería',corte:'Esporádica',transmision:'Esporádica',impl:'TSI',firma:'RL',resp:'Michael Cobos',backup:'Viviana Saaibi Melendez'},
+  {nombre:'ATL Anexo 6',reg:'Banco República',freq:'Esporádico',funcional:'Tesorería',corte:'Esporádica',transmision:'Esporádica',impl:'TSI',firma:'RL',resp:'Michael Cobos',backup:'Viviana Saaibi Melendez'},
+  {nombre:'ATL Anexo 6A',reg:'Banco República',freq:'Esporádico',funcional:'Tesorería',corte:'Esporádica',transmision:'Esporádica',impl:'TSI',firma:'RL',resp:'Michael Cobos',backup:'Viviana Saaibi Melendez'},
+  {nombre:'Anexo 1 — Operaciones sospechosas',reg:'UIAF',freq:'Mensual',funcional:'Cumplimiento',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'In-house',firma:'—',resp:'Juan Camilo Mendez Lanas',backup:'Ciro Humberto Valero Parra'},
+  {nombre:'Anexo 2 — Transacciones en efectivo',reg:'UIAF',freq:'Mensual',funcional:'Cumplimiento',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'—',resp:'Juan Camilo Mendez Lanas',backup:'Ciro Humberto Valero Parra'},
+  {nombre:'Anexo 3 — Clientes exonerados',reg:'UIAF',freq:'Mensual',funcional:'Cumplimiento',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'—',resp:'Juan Camilo Mendez Lanas',backup:'Ciro Humberto Valero Parra'},
+  {nombre:'Anexo 6 — Productos ofrecidos',reg:'UIAF',freq:'Mensual',funcional:'Cumplimiento',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'—',resp:'Juan Camilo Mendez Lanas',backup:'Ciro Humberto Valero Parra'},
+  {nombre:'Reporte 1 — Seguro de depósitos individuales',reg:'FOGAFIN',freq:'Trimestral',funcional:'Operaciones',corte:'Abril, Julio, Octubre, Enero',transmision:'3 días calendario siguientes',impl:'TSI',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'Reporte 2 — Prima de seguro de depósitos',reg:'FOGAFIN',freq:'Trimestral',funcional:'Operaciones / Tesorería / Contabilidad',corte:'Mar 31, Jun 30, Sep 30, Dic 31',transmision:'10 días calendario siguientes',impl:'In-house',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'Reporte 3 — Certificación anual operativa',reg:'FOGAFIN',freq:'Anual',funcional:'Operaciones',corte:'31 diciembre',transmision:'10 primeros días de diciembre',impl:'In-house',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'FATCA — Reporte FATCA',reg:'DIAN',freq:'Anual',funcional:'Cumplimiento',corte:'31 diciembre',transmision:'Mayo de cada año',impl:'TSI',firma:'—',resp:'Juan Camilo Mendez Lanas',backup:'Ciro Humberto Valero Parra'},
+  {nombre:'CRS — Reporte CRS',reg:'DIAN',freq:'Anual',funcional:'Cumplimiento',corte:'31 diciembre',transmision:'Mayo de cada año',impl:'TSI',firma:'—',resp:'Juan Camilo Mendez Lanas',backup:'Ciro Humberto Valero Parra'},
+  {nombre:'1019 — Movimiento cuentas corriente / ahorro',reg:'DIAN',freq:'Anual',funcional:'Contabilidad / Operaciones',corte:'31 diciembre',transmision:'—',impl:'TSI',firma:'—',resp:'Jorge Andres Salamanca Rodriguez',backup:'Vannessa Palma'},
+  {nombre:'Ahorros y CDTs',reg:'TransUnion',freq:'Mensual',funcional:'Operaciones',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'In-house',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'Ahorros y CDTs',reg:'Experian',freq:'Mensual',funcional:'Operaciones',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'In-house',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'Anexo 1 — Traslado cuentas inactivas',reg:'ICETEX',freq:'Mensual',funcional:'Operaciones',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'Anexo 2 — Reintegro cuentas que se reactivan',reg:'ICETEX',freq:'Mensual',funcional:'Operaciones',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'Anexo 3 — Valoración cuentas inactivas',reg:'ICETEX',freq:'Mensual',funcional:'Operaciones',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'Anexo 1 — Traslado saldos cuentas abandonadas',reg:'ICETEX',freq:'Mensual',funcional:'Operaciones',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'Anexo 2 — Mecanismo de comunicación abandonadas',reg:'ICETEX',freq:'Mensual',funcional:'Operaciones',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+  {nombre:'Anexo 3 — Valoración cuentas abandonadas',reg:'ICETEX',freq:'Mensual',funcional:'Operaciones',corte:'Último día del mes',transmision:'20 días calendario siguientes',impl:'TSI',firma:'RL',resp:'Raul Fernando Morales Pinzon',backup:'Jhon Edisson Carvajal Arevalo'},
+];
+
+let activeReg = '';
+function regClass(r){ return REG_CLASS[r]||'ib-freq'; }
+
+function renderInv(){
+  const q=(document.getElementById('inv-search')||{value:''}).value.toLowerCase();
+  const rows=REPORTES.filter(r=>(!activeReg||r.reg===activeReg)&&(!q||r.nombre.toLowerCase().includes(q)||r.reg.toLowerCase().includes(q)||r.funcional.toLowerCase().includes(q)));
+  const body=document.getElementById('inv-body');
+  const sum=document.getElementById('inv-summary');
+  if(!body)return;
+  if(rows.length===0){body.innerHTML='<div style="text-align:center;padding:2rem;color:var(--muted);font-size:13px;">No hay reportes con ese filtro</div>';sum.textContent='Sin resultados';return;}
+  sum.textContent='Mostrando '+rows.length+' de '+REPORTES.length+' reportes';
+  // Group by regulator
+  const regs=[...new Set(rows.map(r=>r.reg))];
+  let html='';
+  regs.forEach(reg=>{
+    const group=rows.filter(r=>r.reg===reg);
+    html+=`<div style="margin-bottom:18px;">
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 14px 6px;border-bottom:2px solid var(--border2);">
+        <span style="font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);">${reg}</span>
+        <span style="font-size:11px;color:var(--muted);">${group.length} formato${group.length!==1?'s':''}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 160px 90px;gap:8px;padding:6px 14px 4px;border-bottom:0.5px solid var(--border);">
+        <span style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Nombre del formato</span>
+        <span style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Área funcional</span>
+        <span style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Periodicidad</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0;">`;
+    group.forEach((r,gi)=>{
+      const idx=rows.indexOf(r);
+      html+=`
+      <div style="border-radius:var(--radius);overflow:hidden;" id="wrap-${idx}">
+        <div onclick="toggleDetailNew('det-${idx}','wrap-${idx}')" style="display:grid;grid-template-columns:1fr 160px 90px;align-items:center;gap:8px;padding:8px 14px;background:var(--surface);border:0.5px solid var(--border);border-radius:0;cursor:pointer;transition:background .12s;">
+          <div style="font-size:13px;font-weight:500;color:var(--text);">${r.nombre}</div>
+          <div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.funcional}</div>
+          <span class="inv-badge ib-freq" style="white-space:nowrap;">${r.freq}</span>
+        </div>
+      <div id="det-${idx}" style="display:none;padding:14px 20px;background:var(--surface2);border:0.5px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px 24px;">
+          <div style="padding:8px 10px;"><div style="font-size:11px;font-weight:700;color:var(--text);letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;">Regulador</div><div><span class="inv-badge ${regClass(r.reg)}">${r.reg}</span></div></div>
+          <div style="padding:8px 10px;"><div style="font-size:11px;font-weight:700;color:var(--text);letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;">Firma</div><div style="font-size:14px;color:var(--text);">${r.firma||'—'}</div></div>
+          <div style="padding:8px 10px;"><div style="font-size:11px;font-weight:700;color:var(--text);letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;">F. corte</div><div style="font-size:14px;color:var(--text);">${r.corte}</div></div>
+          <div style="padding:8px 10px;"><div style="font-size:11px;font-weight:700;color:var(--text);letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;">F. transmisión</div><div style="font-size:14px;color:var(--text);">${r.transmision}</div></div>
+          <div style="padding:8px 10px;"><div style="font-size:11px;font-weight:700;color:var(--text);letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;">Implementación</div><div><span style="display:inline-block;padding:2px 9px;font-size:13px;background:${r.impl==='In-house'?'rgba(14,164,122,.08)':'rgba(26,86,196,.08)'};border:0.5px solid ${r.impl==='In-house'?'rgba(14,164,122,.2)':'rgba(26,86,196,.2)'};border-radius:4px;color:${r.impl==='In-house'?'#0a7a5a':'#1a56c4'}">${r.impl}</span></div></div>
+          <div style="padding:8px 10px;"><div style="font-size:11px;font-weight:700;color:var(--text);letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;">Responsable</div><div style="font-size:14px;color:var(--text);">${r.resp||r.funcional}</div></div>
+          <div style="padding:8px 10px;"><div style="font-size:11px;font-weight:700;color:var(--text);letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;">Backup</div><div style="font-size:14px;color:var(--text);">${r.backup||'—'}</div></div>
+        </div>
+      </div>
+    </div>`;
+    });
+    html+='</div></div>';
+  });
+  body.innerHTML=html;
+}
+
+function toggleDetailNew(id,wrapId){
+  const el=document.getElementById(id);
+  const wrap=document.getElementById(wrapId);
+  if(!el||!wrap)return;
+  const isOpen=el.style.display!=='none';
+  const row=wrap.querySelector('div[onclick]');
+  if(isOpen){
+    el.style.display='none';
+    if(row)row.style.background='var(--surface)';
+  } else {
+    el.style.display='block';
+    if(row)row.style.background='rgba(26,86,196,.18)';
+  }
+}
+function toggleDetail(id){const el=document.getElementById(id);if(!el)return;el.style.display=el.style.display==='none'?'block':'none';}
+function setReg(reg,btn){activeReg=reg;document.querySelectorAll('.inv-chip').forEach(c=>c.classList.remove('on'));btn.classList.add('on');renderInv();}
+function filterInv(){renderInv();}
+renderInv();
+
+
+</script>
+
+
+
+
+
+</body>
+</html>
